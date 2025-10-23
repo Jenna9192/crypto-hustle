@@ -6,6 +6,23 @@ const API_KEY = import.meta.env.VITE_APP_API_KEY
 
 function App() {
   const [list, setlist] = useState(null)
+  const [filteredResults, setFilteredResults] = useState([])
+  const [searchInput, setSetInput] = useState("")
+
+  const searchItems = searchValue => {
+  setSearchInput(searchValue)
+  if (searchValue !== "") {
+    const filteredData = list.Data.filter((item) => 
+      Object.values(item.CoinInfo)
+        .join("")
+        .toLowerCase()
+        .includes(searchValue.toLowerCase())
+    )
+    setFilteredResults(filteredData)
+  } else {
+    setFilteredResults(list.Data)
+  }
+}
 
   useEffect(() => {
     const fetchAllCoinData = async () => {
@@ -40,6 +57,7 @@ function App() {
               symbol={coinData.Name}
             />
           ))}
+
         <input
           type="text"
           placeholder="Search..."
